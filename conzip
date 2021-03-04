@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+#
+# bind usage guide:
+#
+#   [-h|--help]                print this message
+#   [-p|--pdf]  <out_file>     compile sources for pdf
+#   [-w|--web]  <out_file>     compile sources for html
+#   [-b|--both] <out_file>     compile sources for both
+#
+#   [-m|--main]      <dir>      path to tex top [default "./main.tex"]
+#   [-c|--chapters]  <dir>      directory to chapters [default "./"]
+#   [-t|--tables]    <dir>      directory for tables
+#   [-i|--images]    <dir>      directory for images
+#   [-e|--extra]     <dir>      directory for extra tex
+#   [-a|--artifacts] <dir>      directory to store build artifacts
+#   [-o|--outdir]    <dir>      directory to store final products in
+#
+# Authors: John Burke
+# Date:    3 March 2021   
+#
+
+import os, sys, argparse
+import git, yaml
+
+########################################
+##                                    ##
+## Terminal Management                ##
+##                                    ##
+########################################
+class parser_with_error(argparse.ArgumentParser):
+  def error(self, message = ""):
+    if(message):
+      print("Error: %s" % message)
+    source = open(sys.argv[0]) # open localize.py
+    for(line_no, line) in enumerate(source):
+      if(line[0] != "#"): sys.exit() # exit on 1st noncomment line
+      if(line_no > 0):    print(line[1:].rstrip("\n"))
+
+def parse():
+  parser = parser_with_error(add_help = False)
+
+  # mode arguments for the script
+
+  mode = parser.add_mutually_exclusive_group(required = True)
+
+  mode.add_argument("-h", "--help", action  = "store_true")
+  mode.add_argument("-p", "--pdf",  action  = "store_true")
+  mode.add_argument("-w", "--web",  action  = "store_true")
+  mode.add_argument("-b", "--both", action  = "store_true")
+
+  # source directories
+
+  parser.add_argument("-m", "--main",     type = str, default = "./main.tex")
+  parser.add_argument("-c", "--chapters", type = str, default = "./")
+  parser.add_argument("-t", "--tables",   type = str, default = "./")
+  parser.add_argument("-i", "--images",   type = str, default = "./")
+  parser.add_argument("-e", "--extra",    type = str, default = "./")
+
+  parser.add_argument("-a", "--artifacts", type = str, default = "./artifacts")
+  parser.add_argument("-o", "--outdir",    type = str, default = "./out")
+
+  # package it up
+
+  options = parser.parse_args()
+
+  if options.help:
+    parser.error()
+  else:
+    return options
+
+########################################
+##                                    ##
+##  Main                              ##
+##                                    ##
+########################################
+def main():
+  options = parse()
+
+  assert os.path.isfile(options.main),    "conzip error: top file not found"
+  assert os.path.isdir(options.chapters), "conzip error: chapters dir not found"
+  assert os.path.isdir(options.tables),   "conzip error: tables dir not found"
+  assert os.path.isdir(options.images),   "conzip error: images dir not found"
+  assert os.path.isdir(options.extra),    "conzip error: extra dir not found"
+
+  # for the output dirs, make if not present  
+
+  if not os.path.isdir(options.artifacts):
+    os.mkdir(options.artifacts)
+
+  if not os.path.isdir(options.outdir):
+    os.mkdir(options.outdir)
+
+main()  
