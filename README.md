@@ -5,6 +5,7 @@
 
 - top file generation -- in progress
 - chapters generation
+- yaml macro replacer (basically sed)
 - table generator
 - pdf fine tuning
 - html fine tuning
