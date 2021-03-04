@@ -20,7 +20,8 @@
 #
 
 import os, sys, argparse
-from guide import *
+from yaml2tex import *
+from replace import *
 
 ########################################
 ##                                    ##
@@ -91,5 +92,7 @@ def main():
     os.mkdir(options.outdir)
 
   top_tex_gen(options.guide)
+  tables_gen(options.tables)
+  chapters_gen(options.chapters)
 
 main()  
