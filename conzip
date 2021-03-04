@@ -7,7 +7,7 @@
 #   [-w|--web]  <out_file>     compile sources for html
 #   [-b|--both] <out_file>     compile sources for both
 #
-#   [-m|--main]      <dir>      path to tex top [default "./main.tex"]
+#   [-g|--guide] <path/to/file> path to tex main conf file [./guide.yaml]
 #   [-c|--chapters]  <dir>      directory to chapters [default "./"]
 #   [-t|--tables]    <dir>      directory for tables
 #   [-i|--images]    <dir>      directory for images
@@ -49,7 +49,7 @@ def parse():
 
   # source directories
 
-  parser.add_argument("-m", "--main",     type = str, default = "./main.tex")
+  parser.add_argument("-g", "--guide",    type = str, default = "./guide.yaml")
   parser.add_argument("-c", "--chapters", type = str, default = "./")
   parser.add_argument("-t", "--tables",   type = str, default = "./")
   parser.add_argument("-i", "--images",   type = str, default = "./")
@@ -75,7 +75,7 @@ def parse():
 def main():
   options = parse()
 
-  assert os.path.isfile(options.main),    "conzip error: top file not found"
+  assert os.path.isfile(options.guide),   "conzip error: top file not found"
   assert os.path.isdir(options.chapters), "conzip error: chapters dir not found"
   assert os.path.isdir(options.tables),   "conzip error: tables dir not found"
   assert os.path.isdir(options.images),   "conzip error: images dir not found"
