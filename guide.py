@@ -1,14 +1,14 @@
 import yaml
 
-def top_tex_gen(fname):
-  top_dict  = yaml.load(open(fname), Loader = yaml.FullLoader)
+def top_tex_gen(guide, outfile):
+  top_dict  = yaml.load(open(guide), Loader = yaml.FullLoader)
 
   top_lines = preamble_gen(top_dict)
   top_lines = top_lines + ["\\begin{document}"]
   top_lines = top_lines + body_gen(top_dict)
   top_lines = top_lines + ["\\end{document}"]
 
-  with open("top.tex", "w+") as top:
+  with open(outfile, "w+") as top:
     for line in top_lines:
       top.write(line + "\n")
 
