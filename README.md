@@ -4,6 +4,7 @@
 # to do
 
 - top file generation -- in progress
+  -  top file gen safeguards (ie no date or author)
 - chapters generation
 - yaml macro replacer (basically sed)
 - table generator
