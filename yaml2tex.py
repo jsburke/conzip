@@ -1,4 +1,4 @@
-import yaml
+import os, yaml
 
 def top_tex_gen(guide, outfile):
   top_dict  = yaml.load(open(guide), Loader = yaml.FullLoader)
@@ -11,6 +11,20 @@ def top_tex_gen(guide, outfile):
   with open(outfile, "w+") as top:
     for line in top_lines:
       top.write(line + "\n")
+
+def chapters_gen(chapter_yamls):
+  assert type(chapter_yamls) == list
+  assert len(chapter_yamls)  >  0
+
+  for chapter in chapter_yamls:
+    chap_dict = yaml.load(open(chapter), Loader = yaml.FullLoader)
+    chap_tex  = chapter.split(".")[0] + ".tex"
+    chap_name = os.path.basename(chapter).split(".")[0]
+ 
+    with open(chap_tex, "w+") as f:
+      f.write("section{" + chap_name + "}\n")
+      for p in chap_dict["paragraphs"]:
+        f.write("  " + p["text"] + '\n')
 
 def preamble_gen(top_dict):
   font     = top_dict["font"]
