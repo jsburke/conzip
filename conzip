@@ -21,7 +21,7 @@
 
 import os, sys, argparse
 from yaml2tex import *
-from replace import *
+from replace  import *
 
 ########################################
 ##                                    ##
