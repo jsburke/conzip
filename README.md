@@ -15,13 +15,13 @@ Similarly, a small handful of utilities are provided as defaults to make buildin
 
 ## to do
 
-- top file generation -- in progress
+- top file generation -- Closing out
   -  top file gen safeguards (ie no date or author)
-- chapters generation
-- yaml macro replacer (basically sed)
-- table generator
-- pdf fine tuning
-- html fine tuning
-- pdf build
-- html build
-- actually set up the `common` and `default` directories
+- chapters generation -- started
+- yaml macro replacer -- essentially done
+- table generator -- waiting
+- pdf fine tuning -- far off
+- html fine tuning -- far off
+- pdf build -- far off, but easy
+- html build -- far off, slightly bumpier than pdf
+- actually set up the `common` and `default` directories -- I'm lazy
