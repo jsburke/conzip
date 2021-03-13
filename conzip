@@ -2,10 +2,12 @@
 #
 # bind usage guide:
 #
-#   [-h|--help]                print this message
-#   [-p|--pdf]  <out_file>     compile sources for pdf
-#   [-w|--web]  <out_file>     compile sources for html
-#   [-b|--both] <out_file>     compile sources for both
+#   [-h|--help]                 print this message
+#   [-b|--build] <proj_name>    build some prettiness
+#
+#   [-p|--pdf]                  compile sources for pdf
+#   [-w|--web]                  compile sources for html
+#   [-l|--linguifex]            compile sources for linguifex wiki
 #
 #   [-g|--guide] <path/to/file> path to tex main conf file [./guide.yaml]
 #   [-c|--chapters]  <dir>      directory to chapters [default "./"]
@@ -44,21 +46,25 @@ def parse():
 
   mode = parser.add_mutually_exclusive_group(required = True)
 
-  mode.add_argument("-h", "--help", action  = "store_true")
-  mode.add_argument("-p", "--pdf",  action  = "store_true")
-  mode.add_argument("-w", "--web",  action  = "store_true")
-  mode.add_argument("-b", "--both", action  = "store_true")
+  mode.add_argument("-h", "--help",  action  = "store_true")
+  mode.add_argument("-b", "--build", type = str, default = "language")
+
+  # build targets
+
+  parser.add_argument("-p", "--pdf",       action = "store_true")
+  parser.add_argument("-w", "--web",       action = "store_true")
+  parser.add_argument("-l", "--linguifex", action = "store_true")
 
   # source directories
 
-  parser.add_argument("-g", "--guide",    type = str, default = "./guide.yaml")
-  parser.add_argument("-c", "--chapters", type = str, default = "./")
-  parser.add_argument("-t", "--tables",   type = str, default = "./")
-  parser.add_argument("-i", "--images",   type = str, default = "./")
-  parser.add_argument("-e", "--extra",    type = str, default = "./")
+  parser.add_argument("-g", "--guide",    type = str)
+  parser.add_argument("-c", "--chapters", type = str)
+  parser.add_argument("-t", "--tables",   type = str)
+  parser.add_argument("-i", "--images",   type = str)
+  parser.add_argument("-e", "--extra",    type = str)
 
-  parser.add_argument("-a", "--artifacts", type = str, default = "./artifacts")
-  parser.add_argument("-o", "--outdir",    type = str, default = "./out")
+  parser.add_argument("-a", "--artifacts", type = str)
+  parser.add_argument("-o", "--outdir",    type = str)
 
   # package it up
 
@@ -77,13 +83,15 @@ def parse():
 def main():
   options = parse()
 
-  assert os.path.isfile(options.guide),   "conzip error: top file not found"
-  assert os.path.isdir(options.chapters), "conzip error: chapters dir not found"
-  assert os.path.isdir(options.tables),   "conzip error: tables dir not found"
-  assert os.path.isdir(options.images),   "conzip error: images dir not found"
-  assert os.path.isdir(options.extra),    "conzip error: extra dir not found"
+  # directory assertions
+  assert os.path.isfile(options.guide),   "guide file not found"
+  assert os.path.isdir(options.chapters), "chapters dir not found"
+  assert os.path.isdir(options.tables),   "tables dir not found"
+  assert os.path.isdir(options.images),   "images dir not found"
+  assert os.path.isdir(options.extra),    "extra dir not found"
 
-  # for the output dirs, make if not present  
+  assert type(options.artifacts) is not None, "artifacts dir not specified"
+  assert type(options.outdir)    is not None, "outdir not specified"
 
   if not os.path.isdir(options.artifacts):
     os.mkdir(options.artifacts)
@@ -91,8 +99,9 @@ def main():
   if not os.path.isdir(options.outdir):
     os.mkdir(options.outdir)
 
-  top_tex_gen(options.guide)
-  tables_gen(options.tables)
-  chapters_gen(options.chapters)
+  # tables_gen(options.tables, options.artifacts)
+  # top_tex = tex_gen(options.guide, options.chapters, options.artifacts)
+  # text_replace(options.artifacts, options.replace)
+  # final_build(final_docs, top_tex, options.outdir, options.artifacts)
 
 main()  
